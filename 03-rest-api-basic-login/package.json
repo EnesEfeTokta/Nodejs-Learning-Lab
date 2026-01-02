@@ -1,0 +1,18 @@
+{
+  "name": "03-rest-api-basic-login",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": " node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.11"
+  }
+}
