@@ -1,4 +1,4 @@
-# 04 - Rest API Basic Login
+# 03 - Rest API Basic Login
 
 This mini-project builds a simple REST API for user login using Node.js and Express.
 
