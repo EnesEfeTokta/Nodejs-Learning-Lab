@@ -1,25 +1,38 @@
+/// <reference types="node" />
 import { pipeline } from "@xenova/transformers";
 
-async function generateEmbedding(text: string) {
-    const piple = await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
+async function runCli() {
+    const args = process.argv.slice(2);
+    const inputPath = args[0];
 
-    const output = await piple(text, {
-        pooling: "mean",
-        normalize: true,
-    });
+    if (!inputPath) {
+        console.error("Please provide an input string to embed.");
+        console.log('Example: npx tsx embed.ts "Artificial intelligence is changing the future"');
+        process.exit(1);
+    }
 
-    const embedding = Array.from(output.data);
+    console.log("Creating embedding...");
 
-    console.log("\n--- Input Text ---");
-    console.log(text);
+    try {
+        const extractor = await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
 
-    console.log("\n--- Embedding ---");
-    console.log(`Vector Length: ${embedding.length}`);
-    console.log(`First 5 values: ${embedding.slice(0, 5).map(v => v.toFixed(4))}`);
+        const output = await extractor(inputPath, {
+            pooling: "mean",
+            normalize: true,
+        });
 
-    return embedding;
+        const vector = Array.from(output.data);
+
+        console.log("Embedding successfully created:");
+        console.log("------------------------------");
+        console.log(`Input: ${inputPath}`);
+        console.log(`Vector Size: ${vector.length}`);
+        console.log(`Vector Sample: [${vector.slice(0, 10).map((v) => v.toFixed(4)).join(", ")}...]`);
+        console.log("------------------------------");
+    }
+    catch (error) {
+        console.error("An error occurred while creating the embedding:", error);
+    }
 }
 
-// Example usage
-const text = "Transformers provide state-of-the-art natural language processing capabilities.";
-generateEmbedding(text);
+runCli();
